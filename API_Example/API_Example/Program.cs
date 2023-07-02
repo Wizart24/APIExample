@@ -6,8 +6,10 @@ global using Microsoft.EntityFrameworkCore;
 global using API_Example.Data;
 global using Microsoft.AspNetCore.Authentication.JwtBearer;
 global using Microsoft.IdentityModel.Tokens;
+global using API_Example.Services.FightService;
 using Swashbuckle.AspNetCore.Filters;
 using Microsoft.OpenApi.Models;
+using API_Example.Services.WeaponService;
 
 namespace API_Example
 {
@@ -38,6 +40,8 @@ namespace API_Example
 			builder.Services.AddAutoMapper(typeof(Program).Assembly);
 			builder.Services.AddScoped<ICharacterService, CharacterService>();
 			builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+			builder.Services.AddScoped<IWeaponService, WeaponService>();
+			builder.Services.AddScoped<IFightService, FightService>();
 			builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 				.AddJwtBearer(options =>
 				{
@@ -50,6 +54,7 @@ namespace API_Example
 						ValidateAudience = false
 					};
 				});
+			builder.Services.AddHttpContextAccessor();
 
 			var app = builder.Build();
 
